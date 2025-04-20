@@ -51,16 +51,18 @@
 											</div>
 										</div>
 
+										<p>Choose your algo-surfing method:</p>
+
 										<ul class="actions special">
 											<li><button class="button primary" id="bfsBtn">Bredth First Search</button></li>
 											<li><button class="button" id="bidirectBtn">Bi-Directional</button></li>
 										</ul>
 
-										<div id="video-wrapper">
-										<video loop>
-											<source src="assets\animations\wiki_loop.mp4" type="video/mp4">
-											Error
-										</video>
+										<div id="video-wrapper" class="hidden">
+											<video id="animation" loop>
+												<source src="assets\animations\wiki_loop.mp4" type="video/mp4">
+												Error
+											</video>
 										</div>
 
 									</div>
@@ -71,8 +73,7 @@
 							<section id="cta" class="main special">
 								<header class="major">
 									<!--Anticipating a result output: "We surfed to our destination" or "Got lost in the tides"-->
-									<h2 id="success"></h2> <!--need to find a way to not use space when not yet updated with text--> 
-									<p></p>
+									<h2 id="success">See how your surfing method fairs against these Wicked Wiki Waves..</h2> <!--need to find a way to not use space when not yet updated with text--> 
 									<div class="table-wrapper">
 										<table class="alt">
 											<thead>
@@ -88,10 +89,6 @@
 												<tr>
 													<td>Exection Time</td>
 													<td id="runTime">...</td>
-												</tr>
-												<tr>
-													<td>Memory Usage</td>
-													<td id="memoryUsage">...</td>
 												</tr>
 											</tbody>
 										</table>
