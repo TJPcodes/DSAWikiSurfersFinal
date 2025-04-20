@@ -1,40 +1,42 @@
 from js import document
 from pyodide import create_proxy
-from bfs import bfs
 from bidirectional import bidirectional_search
+from bfs import bfs
 import time
 
-def run_search(start, target, algorithm_func):
-    if not start or not target:
-        document.getElementById("runTime").innerText = "Missing input"
-        document.getElementById("success").innerText = "False"
-        document.getElementById("path").innerText = ""
+def update_output(id_name, text):
+    document.getElementById(id_name).innerText = str(text)
+
+def run_search(start, goal, algorithm_func):
+    if not start or not goal:
+        update_output("runTime", "Missing input")
+        update_output("success", "False")
+        update_output("path", "")
         return
 
     start_time = time.time()
-    path = algorithm_func(start, target)
+    path = algorithm_func(start, goal)
     end_time = time.time()
 
     run_time = round(end_time - start_time, 2)
     success = bool(path)
 
-    document.getElementById("runTime").innerText = f"{run_time}s"
-    document.getElementById("success").innerText = str(success)
-    document.getElementById("path").innerText = " → ".join(path) if path else "No path found"
-
-def algo_bidirectional(event):
-    start = document.getElementById("startInput").value.strip()
-    target = document.getElementById("targetInput").value.strip()
-    run_search(start, target, bidirectional_search)
+    update_output("runTime", f"{run_time}s")
+    update_output("success", success)
+    update_output("path", " → ".join(path) if path else "No path found")
 
 def algo_bfs(event):
     start = document.getElementById("startInput").value.strip()
-    target = document.getElementById("targetInput").value.strip()
-    run_search(start, target, bfs)
+    goal = document.getElementById("targetInput").value.strip()
+    run_search(start, goal, bfs)
 
-# Hook up both buttons
-biDi = create_proxy(algo_bidirectional)
-bfsProxy = create_proxy(algo_bfs)
+def algo_bidirectional(event):
+    start = document.getElementById("startInput").value.strip()
+    goal = document.getElementById("targetInput").value.strip()
+    run_search(start, goal, bidirectional_search)
 
-document.getElementById("bidirectBtn").addEventListener("click", biDi)
-document.getElementById("bfsBtn").addEventListener("click", bfsProxy)
+bfs_proxy = create_proxy(algo_bfs)
+bidir_proxy = create_proxy(algo_bidirectional)
+
+document.getElementById("bfsBtn").addEventListener("click", bfs_proxy)
+document.getElementById("bidirectBtn").addEventListener("click", bidir_proxy)
