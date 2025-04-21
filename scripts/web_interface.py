@@ -26,7 +26,7 @@ def update_output(id_name, text):
     el.innerText = str(text)
 
 # Run the algorithm and display results
-def run_search(start, goal, algorithm_func):
+async def run_search(start, goal, algorithm_func):
     if not start or not goal:
         update_output("runTime", "Missing input")
         update_output("success", "Got lost in the tides..")
@@ -36,7 +36,7 @@ def run_search(start, goal, algorithm_func):
     print(f"🌊 Running {algorithm_func.__name__} from '{start}' to '{goal}'")
 
     start_time = time.time()
-    path = algorithm_func(start, goal)
+    path = await algorithm_func(start, goal)
     end_time = time.time()
 
     run_time = round(end_time - start_time, 2)
@@ -60,7 +60,7 @@ async def algo_bfs(event):
 
     start = get_input_value("startInput")
     goal = get_input_value("targetInput")
-    run_search(start, goal, bfs)
+    await run_search(start, goal, bfs)
 
     video.classList.remove("fade") # fade in loading scroll
     await asyncio.sleep(2)
@@ -80,7 +80,7 @@ async def algo_bidirectional(event):
 
     start = get_input_value("startInput")
     goal = get_input_value("targetInput")
-    run_search(start, goal, bidirectional_search)
+    await run_search(start, goal, bidirectional_search)
 
     video.classList.remove("fade") # fade in loading scroll
     await asyncio.sleep(3.5)
