@@ -3,6 +3,7 @@ from pyodide.ffi import create_proxy
 from bfs import bfs
 from bidirectional import bidirectional_search
 import time
+import asyncio
 
 # Get and validate input values
 def get_input_value(id):
@@ -25,7 +26,7 @@ def update_output(id_name, text):
     el.innerText = str(text)
 
 # Run the algorithm and display results
-def run_search(start, goal, algorithm_func):
+async def run_search(start, goal, algorithm_func):
     if not start or not goal:
         update_output("runTime", "Missing input")
         update_output("success", "Got lost in the tides..")
@@ -35,27 +36,59 @@ def run_search(start, goal, algorithm_func):
     print(f"🌊 Running {algorithm_func.__name__} from '{start}' to '{goal}'")
 
     start_time = time.time()
-    path = algorithm_func(start, goal)
+    num_pages = await algorithm_func(start, goal)
     end_time = time.time()
 
     run_time = round(end_time - start_time, 2)
-    success = "We surfed to our destination!" if path else "Got lost in the tides.."
-    num_pages = str(len(path)) if path else "0"
+    success = "We surfed to our destination!" if num_pages else "Got lost in the tides.."
 
     update_output("runTime", f"{run_time}s")
     update_output("success", success)
-    update_output("num_pages", num_pages)
+    update_output("numPages", str(num_pages))
 
-# Button bindings
-def algo_bfs(event):
+# Button bindings and loading animation
+async def algo_bfs(event):
+    video = document.getElementById("video-wrapper")
+    animation = document.getElementById('animation')
+    animation.play()
+    video.classList.remove("hidden")
+    await asyncio.sleep(0.5)
+
+    video.classList.add("fade") # fade in loading scroll
+    await asyncio.sleep(2)
+
     start = get_input_value("startInput")
     goal = get_input_value("targetInput")
-    run_search(start, goal, bfs)
+    await run_search(start, goal, bfs)
 
-def algo_bidirectional(event):
+    document.getElementById("bfsBtn").scrollIntoView({"behavior":'smooth'}) # go to results section
+    video.classList.remove("fade") # fade in loading scroll
+    await asyncio.sleep(2)
+    animation.pause()
+
+    video.classList.add("hidden")
+
+async def algo_bidirectional(event):
+    video = document.getElementById("video-wrapper")
+    animation = document.getElementById('animation')
+    animation.play()
+    video.classList.remove("hidden")
+    await asyncio.sleep(0.5)
+
+    video.classList.add("fade") # fade in loading scroll
+    await asyncio.sleep(3.5)
+
     start = get_input_value("startInput")
     goal = get_input_value("targetInput")
-    run_search(start, goal, bidirectional_search)
+    await run_search(start, goal, bidirectional_search)
+
+    document.getElementById("bfsBtn").scrollIntoView({"behavior":'smooth'}) # go to results section
+    video.classList.remove("fade") # fade in loading scroll
+    await asyncio.sleep(3.5)
+    animation.pause()
+
+    video.classList.add("hidden")
+
 
 # Set up button event listeners
 bfs_proxy = create_proxy(algo_bfs)

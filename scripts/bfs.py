@@ -3,7 +3,7 @@ from sparql import get_outgoing_links
 
 MAX_DEPTH = 12  # Optional: prevent endless traversals
 
-def bfs(start, goal):
+async def bfs(start, goal):
     visited = set()
     queue = deque([start])
     parent = {start: None}
@@ -13,20 +13,22 @@ def bfs(start, goal):
         print(f"🔎 Exploring: {current}")
 
         if current == goal:
-            return reconstruct_path(parent, start, goal)
+            return len(visited)
+
 
         # Optional: track current depth
         depth = get_depth(current, parent)
         if depth > MAX_DEPTH:
             continue
 
-        for neighbor in get_outgoing_links(current):
+        neighbors = await get_outgoing_links(current)
+        for neighbor in neighbors:
             if neighbor not in visited:
                 visited.add(neighbor)
                 parent[neighbor] = current
                 queue.append(neighbor)
 
-    return None  # No path found
+    return 0  # No path found
 
 def get_depth(node, parent):
     depth = 0
@@ -39,23 +41,5 @@ def get_depth(node, parent):
         depth += 1
     return depth
 
-def reconstruct_path(parent, start, goal):
-    path = [goal]
-    visited = set()
 
-    while True:
-        current = path[-1]
-        if current == start:
-            break
-        if current not in parent or parent[current] is None:
-            print("⚠️  Path reconstruction failed — parent missing.")
-            return None
-        if current in visited:
-            print("⚠️  Loop detected in parent map!")
-            return None
-        visited.add(current)
-        path.append(parent[current])
-
-    path.reverse()
-    return path
 
