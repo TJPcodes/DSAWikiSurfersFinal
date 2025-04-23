@@ -9,7 +9,7 @@ Wiki-Surfer is a web-based tool that finds the shortest path between two Wikiped
 -   **Graph Search Algorithms:** Implements Breadth-First Search (BFS) and Bidirectional Search.
 -   **Interactive Web Interface:** Built with HTML, CSS, and JavaScript for a user-friendly experience.
 -   **Performance Metrics:** Displays the number of pages visited and execution time.
--   
+
 ## Algorithms
 
 ### Breadth-First Search (BFS)
