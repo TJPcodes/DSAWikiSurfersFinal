@@ -55,16 +55,27 @@ Wiki-Surfer is a web-based tool that finds the shortest path between two Wikiped
 ## Project Structure
 
 Wiki-Surfer/
+
 ├── index.html # Main HTML file for the web interface
+
 ├── assets/ # Contains CSS, JavaScript, and other assets
+
 │ ├── css/ # CSS files for styling the interface
+
 │ ├── js/ # JavaScript files for interactivity
+
 │ └── animations/ # GIF animation
+
 ├── scripts/ # Python scripts for the search algorithms
+
 │ ├── bfs.py # Breadth-First Search implementation
+
 │ ├── bidirectional.py # Bidirectional Search implementation
+
 │ └── web_interface.py # Interface between web and python
+
 ├── README.md # This file
+
 └── ...
 
 
